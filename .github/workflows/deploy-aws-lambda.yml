@@ -4,15 +4,15 @@ on:
   push:
     branches:
       - dev
-      - main
+      - master
     paths:
       - 'apps/api/**'
       - 'packages/**'
-      - '.github/workflows/deploy-api.yml'
+      - '.github/workflows/deploy-aws-lambda.yml'
   pull_request:
     branches:
       - dev
-      - main
+      - master
     paths:
       - 'apps/api/**'
       - 'packages/**'
@@ -76,7 +76,7 @@ jobs:
       - name: Determine stage and credentials
         id: stage
         run: |
-          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+          if [ "${{ github.ref }}" == "refs/heads/master" ]; then
             echo "STAGE=production" >> $GITHUB_OUTPUT
             echo "REGION=${{ secrets.AWS_REGION_PROD }}" >> $GITHUB_OUTPUT
             echo "ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID_PROD }}" >> $GITHUB_OUTPUT
