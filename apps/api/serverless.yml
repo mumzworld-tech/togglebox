@@ -151,16 +151,19 @@ functions:
           cors: true
 
 custom:
-  # Custom domain configuration from SSM
-  customDomain:
-    domainName: ${ssm:/mumzworld-togglebox-api-${self:provider.stage}/custom-domain/domain-name}
-    certificateArn: ${ssm:/mumzworld-togglebox-api-${self:provider.stage}/custom-domain/certificate-arn}
-    basePath: ''
-    stage: ${self:provider.stage}
-    createRoute53Record: true
-    endpointType: 'regional'
-    securityPolicy: tls_1_2
-    apiType: rest
+  # Custom domain temporarily disabled — mumzworld.com zone is not in this account,
+  # so serverless-domain-manager's Route53 hook fails the deploy. API runs on the raw
+  # API Gateway URL until DNS is wired up. Re-enable this block + the plugin below,
+  # then run `serverless create_domain` once the DNS record exists.
+  # customDomain:
+  #   domainName: ${ssm:/mumzworld-togglebox-api-${self:provider.stage}/custom-domain/domain-name}
+  #   certificateArn: ${ssm:/mumzworld-togglebox-api-${self:provider.stage}/custom-domain/certificate-arn}
+  #   basePath: ''
+  #   stage: ${self:provider.stage}
+  #   createRoute53Record: true
+  #   endpointType: 'regional'
+  #   securityPolicy: tls_1_2
+  #   apiType: rest
 
   # Table prefix from SSM
   tablePrefix: ${ssm:/mumzworld-togglebox-api-${self:provider.stage}/dynamodb/table-prefix}
@@ -607,5 +610,5 @@ resources:
         Name: ${self:service}-${self:provider.stage}-ServiceEndpoint
 
 plugins:
-  - serverless-domain-manager
+  # - serverless-domain-manager   # temporarily disabled — see customDomain note above
   - serverless-offline
